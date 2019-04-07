@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend",
+  "main": "app.js",
+  "scripts": {
+    "start": "./node_modules/pm2/bin/pm2 start",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victoraugustoas/Sistema-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victoraugustoas/Sistema-Backend/issues"
+  },
+  "homepage": "https://github.com/victoraugustoas/Sistema-Backend#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "pm2": "^3.4.1"
+  }
+}
