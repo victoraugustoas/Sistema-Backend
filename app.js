@@ -4,6 +4,9 @@ const app = express()
 // ENV VARIABLES
 require('dotenv').config()
 
+// DATABASE
+require('./config/db')(app)
+
 // MIDDLEWARES
 require('./config/middlewares')(app)
 
