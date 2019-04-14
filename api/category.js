@@ -16,7 +16,7 @@ module.exports = (app) => {
         if (err) return res.send(500).send({ msg: `Erro ao procurar categorias no banco de dados`, err })
 
         if (Object.keys(numberOfTitles).length > 0) {
-            return res.status(409).send('Já existe uma categoria com esse título!')
+            return res.status(409).send({ msg: 'Já existe uma categoria com esse título!' })
         }
 
         const newCategory = new Category({
@@ -30,7 +30,7 @@ module.exports = (app) => {
             if (err) return res.status(500).send({ msg: `Erro ao adicionar a categoria no banco de dados`, err })
 
             // criado no banco de dados
-            return res.status(201).send(`Categoria Adicionada com sucesso!`)
+            return res.status(201).send({ msg: `Categoria Adicionada com sucesso!` })
         })
     }
 
@@ -73,7 +73,7 @@ module.exports = (app) => {
 
         if (err != null) res.status(500).send({ msg: 'Erro ao excluir a categoria do banco de dados', err })
 
-        res.status(200).send('Categoria removida com sucesso!')
+        res.status(200).send({ msg: 'Categoria removida com sucesso!' })
     }
 
     app.category = {
