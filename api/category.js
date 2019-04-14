@@ -8,15 +8,12 @@ module.exports = (app) => {
         let err = null
 
         await Category.find({ title: req.body.title }, (err, docs) => {
-            if (err) {
-                err = err
-            } else {
-                numberOfTitles = { ...docs }
-            }
+            err = err
+            numberOfTitles = { ...docs }
         })
 
         // erro ao executar o find
-        if (err) return res.send(500).send(err)
+        if (err) return res.send(500).send({ msg: `Erro ao procurar categorias no banco de dados`, err })
 
         if (Object.keys(numberOfTitles).length > 0) {
             return res.status(409).send('Já existe uma categoria com esse título!')
@@ -26,14 +23,14 @@ module.exports = (app) => {
             title: req.body.title,
             description: req.body.description,
             path: titleToPath(req.body.title),
-            fatherCategory: req.body.fatherCategory === '' ? null : req.bod.fatherCategory
+            fatherCategory: req.body.fatherCategory === '' ? null : req.body.fatherCategory
         })
 
         newCategory.save((err) => {
-            if (err) return res.status(500).send(err)
+            if (err) return res.status(500).send({ msg: `Erro ao adicionar a categoria no banco de dados`, err })
 
             // criado no banco de dados
-            return res.status(201).send()
+            return res.status(201).send(`Categoria Adicionada com sucesso!`)
         })
     }
 
@@ -42,14 +39,11 @@ module.exports = (app) => {
         let categories = null
 
         await Category.find({}, (err, docs) => {
-            if (err) {
-                err = err
-            } else {
-                categories = docs
-            }
+            err = err
+            categories = docs
         })
 
-        if (err != null) res.status(500).send(err)
+        if (err) res.status(500).send({ msg: `Erro ao buscar as categorias`, err })
 
         res.status(200).send(categories)
     }
@@ -63,7 +57,7 @@ module.exports = (app) => {
             category = docs
         })
 
-        if (err != null) res.status(500).send(err)
+        if (err != null) res.status(500).send({ msg: `Erro ao buscar a categoria`, err })
 
         res.status(200).send(category)
     }
