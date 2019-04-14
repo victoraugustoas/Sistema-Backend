@@ -6,4 +6,7 @@ module.exports = (app) => {
     app.route('/categories/:id')
         .get(app.category.getByID)
         .delete(app.category.remove)
+
+    app.route('/posts')
+        .get(app.post.save)
 }
