@@ -26,7 +26,7 @@ module.exports = (app) => {
             title: req.body.title,
             description: req.body.description,
             path: titleToPath(req.body.title),
-            // fatherCategory: req.body.fatherCategory
+            fatherCategory: req.body.fatherCategory === '' ? null : req.bod.fatherCategory
         })
 
         newCategory.save((err) => {
