@@ -5,4 +5,5 @@ module.exports = (app) => {
 
     app.route('/categories/:id')
         .get(app.category.getByID)
+        .delete(app.category.remove)
 }

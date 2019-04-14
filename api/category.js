@@ -68,9 +68,24 @@ module.exports = (app) => {
         res.status(200).send(category)
     }
 
+    const remove = async (req, res) => {
+        let err = null
+        let category = null
+
+        await Category.deleteOne({ '_id': req.params.id }, (err, docs) => {
+            err = err
+            category = docs
+        })
+
+        if (err != null) res.status(500).send({ msg: 'Erro ao excluir a categoria do banco de dados', err })
+
+        res.status(200).send('Categoria removida com sucesso!')
+    }
+
     app.category = {
         save,
         getCategories,
-        getByID
+        getByID,
+        remove
     }
 }
