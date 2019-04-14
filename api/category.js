@@ -37,7 +37,33 @@ module.exports = (app) => {
         })
     }
 
+    const getCategories = async (req, res) => {
+        let err = null
+        let categories = null
+
+        await Category.find({}, (err, docs) => {
+            if (err) {
+                err = err
+            } else {
+                categories = docs
+            }
+        })
+
+        if (err != null) res.status(500).send(err)
+
+        res.status(200).send(categories)
+    }
+
+    const getByID = async (req, res) => {
+        let err = null
+        let category = null
+
+        await Category.find({ '_id': req.params.id })
+    }
+
     app.category = {
         save,
+        getCategories,
+        getByID
     }
 }
