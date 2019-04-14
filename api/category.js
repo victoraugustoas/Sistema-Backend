@@ -58,7 +58,14 @@ module.exports = (app) => {
         let err = null
         let category = null
 
-        await Category.find({ '_id': req.params.id })
+        await Category.findById(req.params.id, (err, docs) => {
+            err = err
+            category = docs
+        })
+
+        if (err != null) res.status(500).send(err)
+
+        res.status(200).send(category)
     }
 
     app.category = {
