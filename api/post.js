@@ -45,8 +45,23 @@ module.exports = app => {
         res.status(200).send(posts)
     }
 
+    const getPostByID = async (req, res) => {
+        let err = null
+        let post = null
+
+        await Post.findById(req.params.id, (err, docs) => {
+            err = err
+            post = docs
+        })
+
+        if (err) return res.status(500).send({ msg: `Erro ao buscar post no banco de dados`, err })
+
+        res.status(200).send(post)
+    }
+
     app.posts = {
         save,
         getPosts,
+        getPostByID,
     }
 }

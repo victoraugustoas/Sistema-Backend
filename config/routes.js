@@ -13,4 +13,7 @@ module.exports = (app) => {
     app.route('/posts')
         .get(app.posts.getPosts)
         .post(multer(multerConfig).single('file'), app.posts.save)
+
+    app.route('/posts/:id')
+        .get(app.posts.getPostByID)
 }
