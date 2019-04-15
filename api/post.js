@@ -22,7 +22,13 @@ module.exports = app => {
             category: req.body.category
         })
 
-        res.status(201).send({ msg: `Post criado com sucesso!` })
+        // salva no banco de dados o post
+        newPost.save((err) => {
+            if (err) return res.status(500).send({ msg: `Erro ao adicionar o post no banco de dados`, err })
+
+            // criado no banco de dados
+            return res.status(201).send({ msg: `Post criado com sucesso!` })
+        })
     }
 
     const getPosts = async (req, res) => {
