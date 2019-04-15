@@ -11,5 +11,6 @@ module.exports = (app) => {
         .delete(app.category.remove)
 
     app.route('/posts')
+        .get(app.posts.getPosts)
         .post(multer(multerConfig).single('file'), app.posts.save)
 }

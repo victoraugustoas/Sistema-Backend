@@ -13,6 +13,7 @@ module.exports = app => {
         })
 
         if (err) return res.status(500).send({ msg: `Erro ao adicionar post no banco de dados`, err })
+        if (req.body.content.length < 100) return res.status(400).send({ msg: `Conteúdo menor que 100 caracteres!` })
 
         let newPost = new Post({
             title: req.body.title,
@@ -24,7 +25,22 @@ module.exports = app => {
         res.status(201).send({ msg: `Post criado com sucesso!` })
     }
 
+    const getPosts = async (req, res) => {
+        let err = null
+        let posts = null
+
+        await Post.find({}, (err, docs) => {
+            err = err
+            posts = docs
+        })
+
+        if (err) return res.status(500).send({ msg: `Erro ao buscar posts no banco de dados`, err })
+
+        res.status(200).send(posts)
+    }
+
     app.posts = {
         save,
+        getPosts,
     }
 }
