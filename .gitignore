@@ -29,3 +29,9 @@ node_modules
 
 # dados sensíveis
 .env
+
+# pasta de upload de imagens
+uploads/*.jpg
+uploads/*.png
+uploads/*.jpeg
+uploads/*.gif

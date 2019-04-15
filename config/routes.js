@@ -1,3 +1,6 @@
+const multer = require('multer')
+const multerConfig = require('./multerConfig')
+
 module.exports = (app) => {
     app.route('/categories')
         .post(app.category.save)
@@ -8,5 +11,5 @@ module.exports = (app) => {
         .delete(app.category.remove)
 
     app.route('/posts')
-        .get(app.post.save)
+        .post(multer(multerConfig).single('file'), app.posts.save)
 }
