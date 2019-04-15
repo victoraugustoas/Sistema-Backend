@@ -1,6 +1,8 @@
 const bodyParser = require('body-parser')
 const { captilizeLetter } = require('../utils/utils')
 const cors = require('cors')
+const express = require('express')
+const path = require('path')
 
 module.exports = (app) => {
 
@@ -21,4 +23,6 @@ module.exports = (app) => {
         next()
     })
 
+    // torna a pasta uploads pública para entregar os arquivos
+    app.use('/uploads', express.static(path.join(__dirname, '..', '/uploads')))
 }
