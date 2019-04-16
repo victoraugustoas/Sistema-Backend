@@ -4,7 +4,7 @@
   "description": "backend",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/pm2/bin/pm2 start",
+    "start": "node app.js",
     "dev": "NODE_ENV=dev nodemon"
   },
   "repository": {
