@@ -28,7 +28,7 @@ build/Release
 node_modules
 
 # dados sensíveis
-.env
+.env*
 
 # pasta de upload de imagens
 uploads/*.jpg
