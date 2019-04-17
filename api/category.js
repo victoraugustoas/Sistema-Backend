@@ -43,7 +43,7 @@ module.exports = (app) => {
             categories = docs
         })
 
-        if (err) res.status(500).send({ msg: `Erro ao buscar as categorias`, err })
+        if (err) return res.status(500).send({ msg: `Erro ao buscar as categorias`, err })
 
         res.status(200).send(categories)
     }
@@ -57,7 +57,7 @@ module.exports = (app) => {
             category = docs
         })
 
-        if (err != null) res.status(500).send({ msg: `Erro ao buscar a categoria`, err })
+        if (err) return res.status(500).send({ msg: `Erro ao buscar a categoria`, err })
 
         res.status(200).send(category)
     }
@@ -71,7 +71,7 @@ module.exports = (app) => {
             category = docs
         })
 
-        if (err != null) res.status(500).send({ msg: 'Erro ao excluir a categoria do banco de dados', err })
+        if (err) return res.status(500).send({ msg: 'Erro ao excluir a categoria do banco de dados', err })
 
         res.status(200).send({ msg: 'Categoria removida com sucesso!' })
     }
