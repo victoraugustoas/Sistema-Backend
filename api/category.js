@@ -34,18 +34,17 @@ module.exports = (app) => {
         })
     }
 
-    const getCategories = async (req, res) => {
+    const getCategories = (req, res) => {
         let err = null
         let categories = null
 
-        await Category.find({}, (err, docs) => {
-            err = err
-            categories = docs
-        })
-
-        if (err) return res.status(500).send({ msg: `Erro ao buscar as categorias`, err })
-
-        res.status(200).send(categories)
+        Category.find()
+            .then((categories) => {
+                return res.status(200).send(categories)
+            }).catch((err) => {
+                console.log(err)
+                return res.status(500).send({ msg: `Erro ao buscar as categorias`, err })
+            })
     }
 
     const getByID = async (req, res) => {

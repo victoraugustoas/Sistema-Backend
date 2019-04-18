@@ -44,14 +44,13 @@ module.exports = app => {
         let err = null
         let posts = null
 
-        await Post.find({}, (err, docs) => {
-            err = err
-            posts = docs
-        })
-
-        if (err) return res.status(500).send({ msg: `Erro ao buscar posts no banco de dados`, err })
-
-        res.status(200).send(posts)
+        await Post.find()
+            .then((posts) => {
+                return res.status(200).send(posts)
+            }).catch((err) => {
+                console.log({ err })
+                return res.status(500).send({ msg: `Erro ao buscar posts no banco de dados`, err })
+            })
     }
 
     const getPostByID = async (req, res) => {
