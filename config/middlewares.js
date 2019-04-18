@@ -10,9 +10,12 @@ module.exports = (app) => {
     app.use(cors())
 
     // Removendo cache
-    express.response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-    // express.response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-    // express.response.setHeader("Expires", "0"); // Proxies.
+    app.use((req, res, next) => {
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        res.setHeader("Expires", "0"); // Proxies.
+        next()
+    })
 
     // faz o parser dos objetos json
     app.use(bodyParser.json())
