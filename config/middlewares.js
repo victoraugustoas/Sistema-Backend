@@ -9,6 +9,11 @@ module.exports = (app) => {
     // habilita a api para uso externo
     app.use(cors())
 
+    // Removendo cache
+    express.response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    express.response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    express.response.setHeader("Expires", "0"); // Proxies.
+
     // faz o parser dos objetos json
     app.use(bodyParser.json())
 
