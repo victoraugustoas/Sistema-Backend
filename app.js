@@ -19,6 +19,7 @@ require('./config/middlewares')(app)
 // API
 const category = require('./api/category')(app)
 const post = require('./api/post')(app)
+const author = require('./api/author')(app)
 
 // ROUTES
 const routes = require('./config/routes')(app)
