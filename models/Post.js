@@ -7,6 +7,10 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
+    shortDescription: {
+        type: String,
+        required: true
+    },
     content: {
         type: String,
         required: true
@@ -16,7 +20,7 @@ const postSchema = new Schema({
         required: true
     },
     category: {
-        type: ObjectId,
+        type: [ObjectId],
         required: true
     },
     createdAt: {
