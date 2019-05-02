@@ -1,12 +1,13 @@
 const Author = require('../models/Author')
+const bcrypt = require('bcrypt')
 
 module.exports = app => {
     const save = async (req, res) => {
-        const authorFromDB = null
+        let authorFromDB = null
         let err = null
         let image = null
 
-        const { firstName, lastName, email, password } = req.body
+        let { firstName, lastName, email, password } = req.body
 
         // erro de falta de informações
         if (!firstName) return res.status(400).send({ msg: `Informe o primeiro nome` })
@@ -15,26 +16,36 @@ module.exports = app => {
         if (!password) return res.status(400).send({ msg: `Informe uma senha` })
 
         // procura por outros autores com o mesmo email
-        await Author.find({ email })
+        await Author.find({ email: email })
             .then((authors) => {
-                authorFromDB = authors
+                authorFromDB = { ...authors }
             })
             .catch((err) => {
                 err = err
             })
 
-        if (err) return res.status(500).send({ msg: `Houve um erro interno, tente novamente`, err })
+        if (err) return res.status(500).send({ msg: `Houve um erro interno, tente novamente mais tarde`, err })
         if (authorFromDB && Object.keys(authorFromDB).length > 0) {
             return res.status(409).send({ msg: 'Já existe um autor com esse email!' })
         }
 
         await app.cloudinary.uploader.upload(req.file.path, (err, img) => {
-            err = null
             err = err
             image = img
         })
 
         if (err) return res.send(500).send({ msg: `Ocorreu um erro ao salvar a imagem`, err })
+
+        password = `${password}${process.env.BACKEND_SECRET}`
+        await bcrypt.hash(password, parseInt(process.env.SALT))
+            .then(function (hash) {
+                password = hash
+            })
+            .catch((err) => {
+                err = err
+            })
+
+        if (err) return res.status(500).send({ msg: `Houve um erro interno, tente novamente mais tarde`, err })
 
         let newAuthor = new Author({
             firstName,
