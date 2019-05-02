@@ -64,7 +64,20 @@ module.exports = app => {
             })
     }
 
+    const getAuthorByID = async (req, res) => {
+        let { id } = req.params
+
+        await Author.findById({ _id: id })
+            .then((author) => {
+                res.status(200).send(author)
+            })
+            .catch((err) => {
+                res.status(500).send({ msg: `Houve um erro interno, tente novamente mais tarde`, err })
+            })
+    }
+
     app.author = {
-        save
+        save,
+        getAuthorByID
     }
 }

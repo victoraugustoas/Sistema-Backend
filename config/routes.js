@@ -19,4 +19,7 @@ module.exports = (app) => {
 
     app.route('/author')
         .post(multer(multerConfig).single('file'), app.author.save)
+
+    app.route('/author/:id')
+        .get(app.author.getAuthorByID)
 }
