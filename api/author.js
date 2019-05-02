@@ -1,5 +1,6 @@
 const Author = require('../models/Author')
 const bcrypt = require('bcrypt')
+const jwt = require('jwt-simple')
 
 module.exports = app => {
     const save = async (req, res) => {
@@ -76,8 +77,74 @@ module.exports = app => {
             })
     }
 
+    const signin = async (req, res) => {
+        let { email, password } = req.body
+        let authorFromDB, err = null
+        let passwordValidate = false
+
+        if (!email || !password) return res.status(400).send({ msg: `Informe seu email e sua senha! ` })
+
+        await Author.findOne({ email })
+            .then((author) => {
+                authorFromDB = author
+            })
+            .catch((err) => {
+                err = err
+            })
+
+        if (!authorFromDB) return res.status(400).send({ msg: `Usuário não encontrado, verifique o email digitado` })
+        if (err) return res.send(500).send({ msg: `Houve um erro interno, tente novamente mais tarde`, err })
+
+        // password
+        password = `${password}${process.env.BACKEND_SECRET}`
+        await bcrypt.compare(password, authorFromDB.password)
+            .then((resp) => {
+                passwordValidate = resp
+            })
+            .catch((err) => {
+                err = err
+            })
+
+        if (err) return res.send(500).send({ msg: `Houve um erro interno, tente novamente mais tarde`, err })
+        if (!passwordValidate) return res.status(401).send({ msg: `Senha inválida!` })
+
+        const now = Math.floor(Date.now() / 1000)
+        const payload = {
+            _id: authorFromDB._id,
+            email: authorFromDB.email,
+            firstName: authorFromDB.firstName,
+            lastName: authorFromDB.lastName,
+            image: authorFromDB.image,
+            iat: now,
+            exp: now + (60 * 60 * 24 * 3) // válido por 3 dias
+        }
+        res.json({
+            ...payload,
+            token: jwt.encode(payload, process.env.JWT_SECRET),
+
+        })
+    }
+
+    const validateToken = async (req, res) => {
+        const authorData = req.body || null
+
+        if (authorData) {
+            const token = jwt.decode(authorData.token, process.env.JWT_SECRET)
+
+            if (new Date(token.exp * 1000) > new Date()) {
+                // token válido
+                return res.send(true)
+            }
+        }
+
+        // token inválido
+        return res.send(false)
+    }
+
     app.author = {
         save,
-        getAuthorByID
+        getAuthorByID,
+        signin,
+        validateToken
     }
 }

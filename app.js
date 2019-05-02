@@ -5,16 +5,13 @@ const cloudinary = require('cloudinary').v2
 // ENV VARIABLES
 require('dotenv').config()
 
-// DATABASE
-require('./config/db')(app)
-
-// CLOUDINARY
-const cloudinaryConfig = require('./config/cloudinaryConfig')()
+// CONFIG
+require('./config/db')(app) //DATABASE
+require('./config/middlewares')(app)
+require('./config/passport')(app)
+const cloudinaryConfig = require('./config/cloudinaryConfig')() //CLOUDINARY
 cloudinary.config(cloudinaryConfig)
 app.cloudinary = cloudinary
-
-// MIDDLEWARES
-require('./config/middlewares')(app)
 
 // API
 const category = require('./api/category')(app)
